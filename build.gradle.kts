@@ -6,14 +6,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
         classpath("com.android.tools.build:gradle:4.2.1")
+        classpath("com.squareup.sqldelight:gradle-plugin:1.5.0")
     }
 }
 
 plugins {
-    kotlin("multiplatform") version "1.5.20"
-    kotlin("native.cocoapods") version "1.5.20"
+    kotlin("multiplatform") version "1.5.10"
+    kotlin("native.cocoapods") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.10"
+    id("com.squareup.sqldelight") version "1.5.0"
     id("com.android.library") version "4.2.1"
 }
 
@@ -43,21 +46,48 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val ktorVersion = "1.6.0"
+        val sqlDelightVersion = "1.5.0"
+        val koinVersion = "3.1.1"
+
+        val commonMain by getting {
+            dependencies {
+                // Coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt")
+                // Ktor
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                // Serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1")
+                // Sql Delight
+                implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
+                // Koin
+                api("io.insert-koin:koin-core:$koinVersion")
+                api("io.insert-koin:koin-test:$koinVersion")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting {
+        val androidMain by getting {
             dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
-        val iosMain by getting
+        val androidTest by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
+            }
+        }
         val iosTest by getting
     }
 }
