@@ -81,6 +81,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("io.insert-koin:koin-android:$koinVersion")
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
@@ -108,5 +109,12 @@ buildkonfig {
     packageName = "com.nagyrobi144.dogify"
     defaultConfigs {
         buildConfigField(STRING, "baseUrl", "https://dog.ceo")
+    }
+}
+
+sqldelight {
+    database("DogifyDatabase") {
+        packageName = "com.nagyrobi144.dogify.db"
+        sourceFolders = listOf("sqldelight")
     }
 }
