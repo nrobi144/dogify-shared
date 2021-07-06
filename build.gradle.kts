@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 buildscript {
@@ -7,8 +8,9 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
-        classpath("com.android.tools.build:gradle:4.2.1")
+        classpath("com.android.tools.build:gradle:4.2.2")
         classpath("com.squareup.sqldelight:gradle-plugin:1.5.0")
+        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.7.1")
     }
 }
 
@@ -17,7 +19,8 @@ plugins {
     kotlin("native.cocoapods") version "1.5.10"
     kotlin("plugin.serialization") version "1.5.10"
     id("com.squareup.sqldelight") version "1.5.0"
-    id("com.android.library") version "4.2.1"
+    id("com.codingfeline.buildkonfig") version "0.7.1"
+    id("com.android.library") version "4.2.2"
 }
 
 version = "1.0"
@@ -98,5 +101,12 @@ android {
     defaultConfig {
         minSdkVersion(23)
         targetSdkVersion(30)
+    }
+}
+
+buildkonfig {
+    packageName = "com.nagyrobi144.dogify"
+    defaultConfigs {
+        buildConfigField(STRING, "baseUrl", "https://dog.ceo")
     }
 }
