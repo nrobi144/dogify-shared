@@ -15,6 +15,7 @@ buildscript {
 }
 
 plugins {
+    `maven-publish`
     kotlin("multiplatform") version "1.5.10"
     kotlin("native.cocoapods") version "1.5.10"
     kotlin("plugin.serialization") version "1.5.10"
@@ -23,7 +24,9 @@ plugins {
     id("com.android.library") version "4.2.2"
 }
 
+group = "com.nagyrobi144.dogify"
 version = "1.0"
+
 
 repositories {
     google()
@@ -31,7 +34,9 @@ repositories {
 }
 
 kotlin {
-    android()
+    android {
+        publishLibraryVariants("release", "debug")
+    }
 
     val iosTarget: (String, org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.() -> Unit) -> org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget =
         if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
