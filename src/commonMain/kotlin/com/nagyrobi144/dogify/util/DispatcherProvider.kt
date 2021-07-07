@@ -10,3 +10,5 @@ interface DispatcherProvider {
     val io: CoroutineDispatcher
     val unconfined: CoroutineDispatcher
 }
+
+internal expect fun getDispatcherProvider(): DispatcherProvider

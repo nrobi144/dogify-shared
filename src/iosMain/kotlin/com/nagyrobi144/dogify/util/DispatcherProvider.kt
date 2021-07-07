@@ -1,6 +1,5 @@
-package com.nagyrobi144.dogify.di
+package com.nagyrobi144.dogify.util
 
-import com.nagyrobi144.dogify.util.DispatcherProvider
 import kotlinx.coroutines.Dispatchers
 
 internal actual fun getDispatcherProvider(): DispatcherProvider = IosDispatcherProvider()
